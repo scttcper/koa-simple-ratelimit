@@ -1,5 +1,5 @@
 {
-  "name": "koa--simple-ratelimit",
+  "name": "koa-simple-ratelimit",
   "description": "Simple Rate limiter middleware for koa",
   "repository": "koajs/ratelimit",
   "version": "1.0.0",
