@@ -1,7 +1,7 @@
 {
   "name": "koa-simple-ratelimit",
   "description": "Simple Rate limiter middleware for koa",
-  "repository": "koajs/ratelimit",
+  "repository": "scttcper/koa-simple-ratelimit",
   "version": "1.0.0",
   "keywords": [
     "koa",
