@@ -1,6 +1,26 @@
 'use strict';
 
+/**
+ * Module dependencies.
+ */
 const ms = require('ms');
+
+/**
+ * Expose `ratelimit()`.
+ */
+
+module.exports = ratelimit;
+
+
+/**
+ * Initialize a new limiter with `opts`:
+ *
+ *  - `id` identifier being limited
+ *  - `db` redis connection instance
+ *
+ * @param {Object} opts
+ * @api public
+ */
 
 function ratelimit(opts) {
     opts = opts || {};
@@ -59,6 +79,5 @@ function ratelimit(opts) {
             opts.db.set(name, opts.max-1, 'PX', opts.duration || 3600000, 'NX');
             return finish(ctx, next, opts.max-1, t);
         });
-    };
+    }
 }
-module.exports = ratelimit;

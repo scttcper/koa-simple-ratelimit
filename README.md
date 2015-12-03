@@ -9,7 +9,7 @@
 [travis-image]: https://img.shields.io/travis/scttcper/koa-simple-ratelimit.svg?style=flat-square
 [travis-url]: https://travis-ci.org/scttcper/koa-simple-ratelimit
 
- Rate limiter middleware for koa v2. Differes from koa-ratelimit by not depending on [ratelimiter](https://github.com/tj/node-ratelimiter) and using redis pttl to handle expiration time remaining. This creates only one entry in redis database instead of the three that node-ratelimiter does.
+ Rate limiter middleware for koa v2. Differs from [koa-ratelimit](https://github.com/koajs/ratelimit) by not depending on [ratelimiter](https://github.com/tj/node-ratelimiter) and using redis pttl to handle expiration time remaining. This creates only one entry in redis instead of the three that node-ratelimiter does.
 
 ## Installation
 
