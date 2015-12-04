@@ -23,7 +23,7 @@ $ npm install koa-simple-ratelimit
 var ratelimit = require('koa-simple-ratelimit');
 var redis = require('redis');
 var koa = require('koa');
-var app = koa();
+var app = new koa();
 
 // apply rate limit
 
@@ -38,8 +38,8 @@ app.use(ratelimit({
 
 // response middleware
 
-app.use(function *(){
-  this.body = 'Stuff!';
+app.use(function (){
+  this.body = 'Hello';
 });
 
 app.listen(3000);
