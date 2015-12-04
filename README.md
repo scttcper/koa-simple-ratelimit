@@ -51,6 +51,7 @@ console.log('listening on port 3000');
  - `db` redis connection instance
  - `max` max requests within `duration` [2500]
  - `duration` of limit in milliseconds [3600000]
+ - `id` id to compare requests [ip]
 
 ## Responses
 
