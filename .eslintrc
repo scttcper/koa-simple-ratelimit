@@ -1,5 +1,4 @@
 {
-    "parser": "eslint",
     "rules": {
         "indent": [
             2,
@@ -20,7 +19,7 @@
         "no-console": 0
     },
     "env": {
-        "es6": false,
+        "es6": true,
         "node": true
     },
     "extends": "eslint:recommended",
