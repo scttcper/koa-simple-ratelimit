@@ -38,8 +38,8 @@ app.use(ratelimit({
 
 // response middleware
 
-app.use(function (){
-  this.body = 'Hello';
+app.use(function (ctx){
+  ctx.body = 'Hello';
 });
 
 app.listen(3000);
