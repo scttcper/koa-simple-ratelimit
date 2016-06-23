@@ -3,6 +3,7 @@
 /**
  * Module dependencies.
  */
+const debug = require('debug')('koa-simple-ratelimit');
 const ms = require('ms');
 
 function find(db, p) {
@@ -21,55 +22,77 @@ function pttl(db, p) {
   });
 }
 
-function finish(ctx, next, max, n, t) {
-  ctx.set('X-RateLimit-Limit', max);
-  ctx.set('X-RateLimit-Remaining', n);
-  ctx.set('X-RateLimit-Reset', t);
-  return next();
-}
-
 /**
- * Initialize a new limiter with `opts`:
+ * Initialize ratelimit middleware with the given `opts`:
  *
- *  - `id` identifier being limited
- *  - `db` redis connection instance
+ * - `duration` limit duration in milliseconds [1 hour]
+ * - `max` max requests per `id` [2500]
+ * - `db` database connection
+ * - `id` id to compare requests [ip]
+ * - `headers` custom header names
+ *  - `remaining` remaining number of requests ['X-RateLimit-Remaining']
+ *  - `reset` reset timestamp ['X-RateLimit-Reset']
+ *  - `total` total number of requests ['X-RateLimit-Limit']
  *
  * @param {Object} opts
+ * @return {Function}
  * @api public
  */
 
 function ratelimit(opts) {
   opts = opts || {};
+  opts.headers = opts.headers || {};
+  opts.headers.remaining = opts.headers.remaining || 'X-RateLimit-Remaining';
+  opts.headers.reset = opts.headers.reset || 'X-RateLimit-Reset';
+  opts.headers.total = opts.headers.total || 'X-RateLimit-Limit';
 
   return function ratelimiter(ctx, next) {
     const id = opts.id ? opts.id(ctx) : ctx.ip;
+
     if (id === false) return next();
+
     const name = `limit:${id}:count`;
     return find(opts.db, name).then((cur) => {
-      let n = ~~cur;
+      const n = ~~cur;
       const ex = opts.duration || 3600000;
       let t = Date.now();
       t += ex;
       t = new Date(t).getTime() / 1000 | 0;
-      if (cur !== null) {
-        return pttl(opts.db, name).then((expires) => {
-          if (n - 1 >= 0) {
-            // existing user
-            opts.db.decr(name);
-            n = n - 1;
-            return finish(ctx, next, opts.max, n, t);
-          }
-          // user maxed
-          ctx.set('Retry-After', t);
-          ctx.set('X-RateLimit-Remaining', n);
-          ctx.status = 429;
-          const retryTime = ms(expires, { long: true });
-          ctx.body = `Rate limit exceeded, retry in ${retryTime}`;
-          return true;
-        });
+
+      const headers = {};
+      headers[opts.headers.remaining] = opts.max - 1;
+      headers[opts.headers.reset] = t;
+      headers[opts.headers.total] = opts.max;
+      ctx.set(headers);
+
+      // not existing in redis
+      if (cur === null) {
+        debug('remaining %s/%s %s', opts.max - 1, opts.max, id);
+        opts.db.set(name, opts.max - 1, 'PX', opts.duration || 3600000, 'NX');
+        return next();
       }
-      opts.db.set(name, opts.max - 1, 'PX', opts.duration || 3600000, 'NX');
-      return finish(ctx, next, opts.max, opts.max - 1, t);
+
+      return pttl(opts.db, name).then((expires) => {
+        if (n - 1 >= 0) {
+          // existing in redis
+          opts.db.decr(name);
+          debug('remaining %s/%s %s', n - 1, opts.max, id);
+          headers[opts.headers.remaining] = n - 1;
+          ctx.set(headers);
+          return next();
+        }
+        // user maxed
+        headers['Retry-After'] = t;
+        headers[opts.headers.remaining] = n;
+        ctx.set(headers);
+        ctx.status = 429;
+        const retryTime = ms(expires, { long: true });
+        ctx.body = `Rate limit exceeded, retry in ${retryTime}`;
+        if (opts.throw) {
+          ctx.throw(ctx.status, ctx.body, { headers: headers });
+        }
+        return;
+      });
     });
   };
 }
