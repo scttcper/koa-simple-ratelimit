@@ -1,3 +1,5 @@
+'use strict';
+
 const ratelimit = require('./');
 const redis = require('redis');
 const koa = require('koa');

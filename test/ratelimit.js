@@ -1,3 +1,5 @@
+'use strict';
+
 var koa = require('koa');
 var request = require('supertest');
 var should = require('should');
