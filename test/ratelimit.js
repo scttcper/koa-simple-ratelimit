@@ -1,60 +1,62 @@
+/* eslint-env mocha */
 'use strict';
 
-var koa = require('koa');
-var request = require('supertest');
-var should = require('should');
-var redis = require('redis');
+const Koa = require('koa');
+const request = require('supertest');
+const should = require('should');
+const redis = require('redis');
 
-var ratelimit = require('..');
+const ratelimit = require('..');
 
-var db = redis.createClient();
+const db = redis.createClient();
 
-describe('ratelimit middleware', function () {
-  var rateLimitDuration = 1000;
-  var goodBody = "Num times hit: ";
+describe('ratelimit middleware', () => {
+  const rateLimitDuration = 1000;
+  const goodBody = 'Num times hit: ';
 
-  before(function (done) {
-    db.keys('limit:*', function (err, rows) {
+  before((done) => {
+    db.keys('limit:*', (err, rows) => {
       rows.forEach(db.del, db);
     });
 
     done();
   });
 
-  describe('limit', function () {
-    var guard;
-    var app;
+  describe('limit', () => {
+    let guard;
+    let app;
 
-    var routeHitOnlyOnce = function () {
+    const routeHitOnlyOnce = () => {
       guard.should.be.equal(1);
     };
 
-    beforeEach(function (done) {
-      app = new koa();
+    beforeEach((done) => {
+      app = new Koa();
 
       app.use(ratelimit({
         duration: rateLimitDuration,
         db: db,
-        max: 1
+        max: 1,
       }));
 
-      app.use(function (ctx, next) {
+      app.use((ctx, next) => {
         guard++;
         ctx.body = goodBody + guard;
+        return next();
       });
 
       guard = 0;
 
-      setTimeout(function () {
+      setTimeout(() => {
         request(app.listen())
           .get('/')
-          .expect(200, goodBody + "1")
+          .expect(200, `${goodBody}1`)
           .expect(routeHitOnlyOnce)
           .end(done);
       }, rateLimitDuration);
     });
 
-    it('responds with 429 when rate limit is exceeded', function (done) {
+    it('responds with 429 when rate limit is exceeded', (done) => {
       request(app.listen())
         .get('/')
         .expect('X-RateLimit-Remaining', 0)
@@ -62,80 +64,75 @@ describe('ratelimit middleware', function () {
         .end(done);
     });
 
-    it('should not yield downstream if ratelimit is exceeded', function (done) {
+    it('should not yield downstream if ratelimit is exceeded', (done) => {
       request(app.listen())
         .get('/')
         .expect(429)
-        .end(function () {
+        .end(() => {
           routeHitOnlyOnce();
           done();
         });
     });
   });
 
-  describe('id', function (done) {
-    it('should allow specifying a custom `id` function', function (done) {
-      var app = new koa();
+  describe('id', () => {
+    it('should allow specifying a custom `id` function', (done) => {
+      const app = new Koa();
 
       app.use(ratelimit({
         db: db,
         duration: rateLimitDuration,
         max: 1,
-        id: function (ctx) {
-          return ctx.request.header.foo;
-        }
+        id: (ctx) => ctx.request.header.foo,
       }));
 
       request(app.listen())
         .get('/')
         .set('foo', 'bar')
-        .expect(function (res) {
+        .expect((res) => {
           res.header['x-ratelimit-remaining'].should.equal('0');
         })
         .end(done);
     });
 
-    it('should not limit if `id` returns `false`', function (done) {
-      var app = new koa();
+    it('should not limit if `id` returns `false`', (done) => {
+      const app = new Koa();
 
       app.use(ratelimit({
         db: db,
         duration: rateLimitDuration,
-        id: function (ctx) {
-          return false;
-        },
-        max: 5
+        id: () => false,
+        max: 5,
       }));
 
       request(app.listen())
         .get('/')
-        .expect(function (res) {
+        .expect((res) => {
           res.header.should.not.have.property('x-ratelimit-remaining');
         })
         .end(done);
     });
 
-    it('should limit using the `id` value', function (done) {
-      var app = new koa();
+    it('should limit using the `id` value', (done) => {
+      const app = new Koa();
 
       app.use(ratelimit({
         db: db,
         duration: rateLimitDuration,
         max: 1,
-        id: function (ctx) {
-          return ctx.request.header.foo;
-        }
+        id: (ctx) => ctx.request.header.foo,
       }));
 
-      app.use(function (ctx, next) {
+      app.use((ctx, next) => {
         ctx.body = ctx.request.header.foo;
+        return next();
       });
 
       request(app.listen())
         .get('/')
         .set('foo', 'bar')
         .expect(200, 'bar')
-        .end(function () {
+        .end(() => {
           request(app.listen())
             .get('/')
             .set('foo', 'biz')
