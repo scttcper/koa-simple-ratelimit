@@ -43,7 +43,7 @@ function ratelimit(opts) {
 
   return function ratelimiter(ctx, next) {
     const id = opts.id ? opts.id(ctx) : ctx.ip;
-    if (false === id) return next();
+    if (id === false) return next();
     const name = `limit:${id}:count`;
     return find(opts.db, name).then((cur) => {
       let n = ~~cur;
