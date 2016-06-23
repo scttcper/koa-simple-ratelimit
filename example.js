@@ -1,5 +1,3 @@
-'use strict';
-
 const ratelimit = require('./');
 const redis = require('redis');
 const koa = require('koa');
@@ -8,15 +6,16 @@ const app = module.exports = new koa();
 // apply rate limit
 
 app.use(ratelimit({
-    db: redis.createClient(),
-    duration: 60000,
-    max: 100
+  db: redis.createClient(),
+  duration: 60000,
+  max: 100,
 }));
 
 // response middleware
 
-app.use(function(ctx, next) {
-    ctx.body = 'Stuff!';
+app.use((ctx, next) => {
+  ctx.body = 'Stuff!';
+  return next();
 });
 
 app.listen(4000);
