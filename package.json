@@ -24,7 +24,7 @@
     "should": "^9.0.2",
     "eslint": "~2.13.1",
     "eslint-config-airbnb-base": "~3.0.1",
-    "eslint-plugin-import": "~1.9.2",
+    "eslint-plugin-import": "~1.10.0",
     "supertest": "^1.2.0"
   },
   "scripts": {
