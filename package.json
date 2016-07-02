@@ -2,7 +2,7 @@
   "name": "koa-simple-ratelimit",
   "description": "Simple Rate limiter middleware for koa",
   "repository": "scttcper/koa-simple-ratelimit",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "keywords": [
     "koa",
     "middleware",
@@ -22,7 +22,7 @@
     "mocha": "^2.5.3",
     "redis": "^2.6.2",
     "should": "^9.0.2",
-    "eslint": "~2.13.1",
+    "eslint": "~3.0.0",
     "eslint-config-airbnb-base": "~3.0.1",
     "eslint-plugin-import": "~1.10.0",
     "supertest": "^1.2.0"
