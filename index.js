@@ -51,6 +51,14 @@ function ratelimit(opts) {
 
     if (id === false) return next();
 
+    // whitelist
+    if (opts.whitelist && opts.whitelist.indexOf(id) !== -1)
+      return next();
+
+    // blacklist
+    if (opts.blacklist && opts.blacklist.indexOf(id) !== -1)
+      return ctx.throw(403);
+
     const name = `limit:${id}:count`;
     return find(opts.db, name).then((cur) => {
       const n = ~~cur;
