@@ -192,5 +192,57 @@ describe('ratelimit middleware', () => {
             .end(done);
         });
     });
+    it('should whitelist using the `id` value', done => {
+      const app = new Koa();
+
+      app.use(ratelimit({
+        db: db,
+        max: 1,
+        id: ctx => ctx.header.foo,
+        whitelist: ['bar'],
+      }));
+
+      app.use(ctx => {
+        ctx.body = ctx.header.foo;
+      });
+
+      request(app.listen())
+        .get('/')
+        .set('foo', 'bar')
+        .expect(200, 'bar')
+        .end(() => {
+          request(app.listen())
+            .get('/')
+            .set('foo', 'bar')
+            .expect(200, 'bar')
+            .end(done);
+        });
+    });
+    it('should blacklist using the `id` value', done => {
+      const app = new Koa();
+
+      app.use(ratelimit({
+        db: db,
+        max: 1,
+        id: ctx => ctx.header.foo,
+        blacklist: 'bar',
+      }));
+
+      app.use(ctx => {
+        ctx.body = ctx.header.foo;
+      });
+
+      request(app.listen())
+        .get('/')
+        .set('foo', 'bar')
+        .expect(200, 'bar')
+        .end(() => {
+          request(app.listen())
+            .get('/')
+            .set('foo', 'bar')
+            .expect(403)
+            .end(done);
+        });
+    });
   });
 });
