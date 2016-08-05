@@ -33,7 +33,9 @@ app.use(ratelimit({
   max: 100,
   id: function (ctx) {
     return ctx.ip;
-  }
+  },
+  blacklist: [],
+  whitelist: []
 }));
 
 // response middleware
