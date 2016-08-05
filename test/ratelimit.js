@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 'use strict';
 
 const Koa = require('koa');
@@ -59,7 +60,7 @@ describe('ratelimit middleware', () => {
     it('responds with 429 when rate limit is exceeded', (done) => {
       request(app.listen())
         .get('/')
-        .expect('X-RateLimit-Remaining', 0)
+        .expect('X-RateLimit-Remaining', '0')
         .expect(429)
         .end(done);
     });
@@ -120,7 +121,7 @@ describe('ratelimit middleware', () => {
     it('responds with 429 when rate limit is exceeded', (done) => {
       request(app.listen())
         .get('/')
-        .expect('X-RateLimit-Remaining', 0)
+        .expect('X-RateLimit-Remaining', '0')
         .expect(429)
         .end(done);
     });
