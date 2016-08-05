@@ -54,6 +54,8 @@ console.log('listening on port 3000');
  - `max` max requests within `duration` [2500]
  - `duration` of limit in milliseconds [3600000]
  - `id` id to compare requests [ip]
+ - `whitelist` array of ids to whitelist
+ - `blacklist` array of ids to blacklist
 
 ## Responses
 
