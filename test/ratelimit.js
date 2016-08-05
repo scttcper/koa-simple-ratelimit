@@ -87,12 +87,11 @@ describe('ratelimit middleware', () => {
     beforeEach((done) => {
       app = new Koa();
 
-      app.use((ctx, next) => {
-        return next().catch((e) => {
+      app.use((ctx, next) => next()
+        .catch((e) => {
           ctx.body = e.message;
           ctx.set(e.headers);
-        });
-      });
+        }));
 
       app.use(ratelimit({
         duration: rateLimitDuration,
