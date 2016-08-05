@@ -49,15 +49,18 @@ function ratelimit(opts) {
   return function ratelimiter(ctx, next) {
     const id = opts.id ? opts.id(ctx) : ctx.ip;
 
-    if (id === false) return next();
+    if (id === false) {
+      return next();
+    }
 
     // whitelist
-    if (opts.whitelist && opts.whitelist.indexOf(id) !== -1)
+    if (opts.whitelist && opts.whitelist.indexOf(id) !== -1) {
       return next();
-
+    }
     // blacklist
-    if (opts.blacklist && opts.blacklist.indexOf(id) !== -1)
+    if (opts.blacklist && opts.blacklist.indexOf(id) !== -1) {
       return ctx.throw(403);
+    }
 
     const name = `limit:${id}:count`;
     return find(opts.db, name).then((cur) => {
