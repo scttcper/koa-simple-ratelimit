@@ -21,7 +21,7 @@
     "koa": "^2.0.0-beta.4",
     "mocha": "^3.0.1",
     "redis": "^2.6.2",
-    "should": "^10.0.0",
+    "should": "^11.0.0",
     "eslint": "~3.2.2",
     "eslint-config-airbnb-base": "~5.0.1",
     "eslint-plugin-import": "~1.12.0",
