@@ -18,12 +18,12 @@
     "ms": "^0.7.1"
   },
   "devDependencies": {
-    "koa": "^2.0.0-beta.4",
-    "mocha": "^3.0.1",
+    "koa": "^2.0.0-beta.5",
+    "mocha": "^3.0.2",
     "redis": "^2.6.2",
-    "should": "^11.0.0",
+    "should": "^11.1.0",
     "eslint": "~3.3.0",
-    "eslint-config-airbnb-base": "~5.0.1",
+    "eslint-config-airbnb-base": "~5.0.2",
     "eslint-plugin-import": "~1.13.0",
     "supertest": "^2.0.0"
   },
