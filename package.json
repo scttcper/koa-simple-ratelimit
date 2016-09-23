@@ -22,7 +22,7 @@
     "mocha": "^3.0.2",
     "redis": "^2.6.2",
     "should": "^11.1.0",
-    "eslint": "~3.5.0",
+    "eslint": "~3.6.0",
     "eslint-config-airbnb-base": "~7.1.0",
     "eslint-plugin-import": "~1.16.0",
     "supertest": "^2.0.0"
