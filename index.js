@@ -64,11 +64,10 @@ function ratelimit(opts) {
 
     const name = `limit:${id}:count`;
     return find(opts.db, name).then((cur) => {
-      const n = ~~cur;
-      const ex = opts.duration || 3600000;
+      const n = Math.floor(cur);
       let t = Date.now();
-      t += ex;
-      t = new Date(t).getTime() / 1000 | 0;
+      t += opts.duration || 3600000;
+      t = new Date(t).getTime() / 1000 || 0;
 
       const headers = {};
       headers[opts.headers.remaining] = opts.max - 1;

@@ -1,11 +1,11 @@
 {
   "name": "koa-simple-ratelimit",
-  "description": "Simple Rate limiter middleware for koa",
+  "description": "Simple Rate limiter middleware for koa v2",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/scttcper/koa-simple-ratelimit.git"
   },
-  "version": "2.0.0",
+  "version": "2.1.0",
   "keywords": [
     "koa",
     "middleware",
