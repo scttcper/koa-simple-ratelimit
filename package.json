@@ -31,7 +31,8 @@
     "supertest": "^2.0.0"
   },
   "scripts": {
-    "test": "NODE_ENV=test node_modules/mocha/bin/mocha --reporter spec"
+    "test": "NODE_ENV=test node_modules/mocha/bin/mocha --reporter spec",
+    "lint": "eslint index.js test; exit 0"
   },
   "engines": {
     "node": ">= 6"
