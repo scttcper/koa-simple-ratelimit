@@ -1,6 +1,8 @@
-/* eslint-env mocha */
-/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 'use strict';
+
+/* eslint-env mocha */
+/* eslint no-unused-vars: 0 */
+/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 
 const Koa = require('koa');
 const request = require('supertest');
@@ -41,7 +43,7 @@ describe('ratelimit middleware', () => {
       }));
 
       app.use((ctx, next) => {
-        guard++;
+        guard += 1;
         ctx.body = goodBody + guard;
         return next();
       });
@@ -101,7 +103,7 @@ describe('ratelimit middleware', () => {
       }));
 
       app.use((ctx, next) => {
-        guard++;
+        guard += 1;
         ctx.body = goodBody + guard;
         return next();
       });
@@ -134,7 +136,7 @@ describe('ratelimit middleware', () => {
         db: db,
         duration: rateLimitDuration,
         max: 1,
-        id: (ctx) => ctx.request.header.foo,
+        id: ctx => ctx.request.header.foo,
       }));
 
       request(app.listen())
@@ -171,7 +173,7 @@ describe('ratelimit middleware', () => {
         db: db,
         duration: rateLimitDuration,
         max: 1,
-        id: (ctx) => ctx.request.header.foo,
+        id: ctx => ctx.request.header.foo,
       }));
 
       app.use((ctx, next) => {
@@ -191,7 +193,7 @@ describe('ratelimit middleware', () => {
             .end(done);
         });
     });
-    it('should whitelist using the `id` value', done => {
+    it('should whitelist using the `id` value', (done) => {
       const app = new Koa();
 
       app.use(ratelimit({
@@ -201,7 +203,7 @@ describe('ratelimit middleware', () => {
         whitelist: ['bar'],
       }));
 
-      app.use(ctx => {
+      app.use((ctx) => {
         ctx.body = ctx.header.foo;
       });
 
@@ -217,7 +219,7 @@ describe('ratelimit middleware', () => {
             .end(done);
         });
     });
-    it('should blacklist using the `id` value', done => {
+    it('should blacklist using the `id` value', (done) => {
       const app = new Koa();
 
       app.use(ratelimit({
@@ -227,7 +229,7 @@ describe('ratelimit middleware', () => {
         blacklist: 'bar',
       }));
 
-      app.use(ctx => {
+      app.use((ctx) => {
         ctx.body = ctx.header.foo;
       });
 

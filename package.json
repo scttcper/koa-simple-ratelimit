@@ -1,7 +1,10 @@
 {
   "name": "koa-simple-ratelimit",
   "description": "Simple Rate limiter middleware for koa",
-  "repository": "scttcper/koa-simple-ratelimit",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scttcper/koa-simple-ratelimit.git"
+  },
   "version": "2.0.0",
   "keywords": [
     "koa",
@@ -18,7 +21,7 @@
     "ms": "^0.7.1"
   },
   "devDependencies": {
-    "koa": "2.0.0-alpha.5",
+    "koa": "2.0.0-alpha.7",
     "mocha": "^3.0.2",
     "redis": "^2.6.2",
     "should": "^11.1.0",
