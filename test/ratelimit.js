@@ -1,9 +1,5 @@
 'use strict';
 
-/* eslint-env mocha */
-/* eslint no-unused-vars: 0 */
-/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
-
 const Koa = require('koa');
 const request = require('supertest');
 const should = require('should');
