@@ -15,7 +15,7 @@ describe('ratelimit middleware', () => {
 
   before((done) => {
     db.keys('limit:*', (err, rows) => {
-      rows.forEach(db.del, db);
+      rows.forEach(n => db.del(n));
     });
 
     done();
