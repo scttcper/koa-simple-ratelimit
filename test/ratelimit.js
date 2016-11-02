@@ -89,6 +89,7 @@ describe('ratelimit middleware', () => {
         duration: 1,
         db: db,
         max: 1,
+        id: () => 'id',
       }));
 
       app.use((ctx, next) => {
@@ -100,12 +101,12 @@ describe('ratelimit middleware', () => {
       guard = 0;
       done();
     });
-
-    it('should respond with 429 when rate limit is exceeded', (done) => {
+    it('should fix an id with -1 ttl', (done) => {
+      db.decr('limit:id:count');
       request(app.listen())
         .get('/')
         .expect('X-RateLimit-Remaining', '0')
-        .expect(429)
+        .expect(200)
         .end(done);
     });
   });
