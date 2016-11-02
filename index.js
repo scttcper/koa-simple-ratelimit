@@ -91,6 +91,12 @@ function ratelimit(opts) {
           ctx.set(headers);
           return next();
         }
+        if (expires < 0) {
+          debug(`${name} is stuck. Resetting.`);
+          debug('remaining %s/%s %s', opts.max - 1, opts.max, id);
+          opts.db.set(name, opts.max - 1, 'PX', opts.duration || 3600000, 'NX');
+          return next();
+        }
         // user maxed
         headers['Retry-After'] = t;
         headers[opts.headers.remaining] = n;

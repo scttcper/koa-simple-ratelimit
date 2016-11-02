@@ -10,7 +10,7 @@ const ratelimit = require('..');
 const db = redis.createClient();
 
 describe('ratelimit middleware', () => {
-  const rateLimitDuration = 1000;
+  const rateLimitDuration = 300;
   const goodBody = 'Num times hit: ';
 
   before((done) => {
@@ -55,7 +55,7 @@ describe('ratelimit middleware', () => {
       }, rateLimitDuration);
     });
 
-    it('responds with 429 when rate limit is exceeded', (done) => {
+    it('should respond with 429 when rate limit is exceeded', (done) => {
       request(app.listen())
         .get('/')
         .expect('X-RateLimit-Remaining', '0')
@@ -71,6 +71,42 @@ describe('ratelimit middleware', () => {
           routeHitOnlyOnce();
           done();
         });
+    });
+  });
+
+  describe('shortlimit', () => {
+    let guard;
+    let app;
+
+    const routeHitOnlyOnce = () => {
+      guard.should.be.equal(1);
+    };
+
+    beforeEach((done) => {
+      app = new Koa();
+
+      app.use(ratelimit({
+        duration: 1,
+        db: db,
+        max: 1,
+      }));
+
+      app.use((ctx, next) => {
+        guard += 1;
+        ctx.body = goodBody + guard;
+        return next();
+      });
+
+      guard = 0;
+      done();
+    });
+
+    it('should respond with 429 when rate limit is exceeded', (done) => {
+      request(app.listen())
+        .get('/')
+        .expect('X-RateLimit-Remaining', '0')
+        .expect(429)
+        .end(done);
     });
   });
 
