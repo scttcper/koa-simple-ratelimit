@@ -6,3 +6,5 @@ node_js:
   - "4"
 services:
   - redis-server
+script: npm run coverage
+after_script: "cat ./coverage/lcov.info | coveralls"
