@@ -1,4 +1,3 @@
-
 # koa-simple-ratelimit
 
 [![NPM version][npm-image]][npm-url]
