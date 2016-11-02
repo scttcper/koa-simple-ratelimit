@@ -10,12 +10,12 @@ const ratelimit = require('..');
 const db = redis.createClient();
 
 describe('ratelimit middleware', () => {
-  const rateLimitDuration = 1000;
+  const rateLimitDuration = 300;
   const goodBody = 'Num times hit: ';
 
   before((done) => {
     db.keys('limit:*', (err, rows) => {
-      rows.forEach(db.del, db);
+      rows.forEach(n => db.del(n));
     });
 
     done();
@@ -55,7 +55,7 @@ describe('ratelimit middleware', () => {
       }, rateLimitDuration);
     });
 
-    it('responds with 429 when rate limit is exceeded', (done) => {
+    it('should respond with 429 when rate limit is exceeded', (done) => {
       request(app.listen())
         .get('/')
         .expect('X-RateLimit-Remaining', '0')
@@ -71,6 +71,106 @@ describe('ratelimit middleware', () => {
           routeHitOnlyOnce();
           done();
         });
+    });
+  });
+
+  describe('limit twice', () => {
+    let guard;
+    let app;
+
+    const routeHitOnlyOnce = () => {
+      guard.should.be.equal(1);
+    };
+    const routeHitTwice = () => {
+      guard.should.be.equal(2);
+    };
+
+    beforeEach((done) => {
+      app = new Koa();
+
+      app.use(ratelimit({
+        duration: rateLimitDuration,
+        db: db,
+        max: 2,
+      }));
+
+      app.use((ctx, next) => {
+        guard += 1;
+        ctx.body = goodBody + guard;
+        return next();
+      });
+
+      guard = 0;
+
+      const listen = app.listen();
+      setTimeout(() => {
+        request(listen)
+          .get('/')
+          .expect(200, `${goodBody}1`)
+          .expect(routeHitOnlyOnce)
+          .end(() => {
+            request(listen)
+              .get('/')
+              .expect(200, `${goodBody}2`)
+              .expect(routeHitTwice)
+              .end(done);
+          });
+      }, rateLimitDuration * 2);
+    });
+
+    it('should respond with 429 when rate limit is exceeded', (done) => {
+      request(app.listen())
+        .get('/')
+        .expect('X-RateLimit-Remaining', '0')
+        .expect(429)
+        .end(done);
+    });
+
+    it('should not yield downstream if ratelimit is exceeded', (done) => {
+      request(app.listen())
+        .get('/')
+        .expect(429)
+        .end(() => {
+          routeHitTwice();
+          done();
+        });
+    });
+  });
+
+  describe('shortlimit', () => {
+    let guard;
+    let app;
+
+    const routeHitOnlyOnce = () => {
+      guard.should.be.equal(1);
+    };
+
+    beforeEach((done) => {
+      app = new Koa();
+
+      app.use(ratelimit({
+        duration: 1,
+        db: db,
+        max: 1,
+        id: () => 'id',
+      }));
+
+      app.use((ctx, next) => {
+        guard += 1;
+        ctx.body = goodBody + guard;
+        return next();
+      });
+
+      guard = 0;
+      done();
+    });
+    it('should fix an id with -1 ttl', (done) => {
+      db.decr('limit:id:count');
+      request(app.listen())
+        .get('/')
+        .expect('X-RateLimit-Remaining', '0')
+        .expect(200)
+        .end(done);
     });
   });
 

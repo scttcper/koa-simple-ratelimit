@@ -5,7 +5,7 @@
     "type": "git",
     "url": "git+https://github.com/scttcper/koa-simple-ratelimit.git"
   },
-  "version": "2.1.0",
+  "version": "2.1.1",
   "keywords": [
     "koa",
     "middleware",
@@ -22,6 +22,8 @@
   },
   "devDependencies": {
     "koa": "2.0.0-alpha.7",
+    "coveralls": "^2.11.14",
+    "nyc": "^8.3.2",
     "mocha": "^3.1.2",
     "redis": "^2.6.3",
     "should": "^11.1.1",
@@ -32,10 +34,11 @@
   },
   "scripts": {
     "test": "NODE_ENV=test node_modules/mocha/bin/mocha --reporter spec",
-    "lint": "eslint index.js test; exit 0"
+    "lint": "eslint index.js test; exit 0",
+    "coverage": "nyc npm test"
   },
   "engines": {
-    "node": ">= 6"
+    "node": ">= 4"
   },
   "license": "MIT"
 }

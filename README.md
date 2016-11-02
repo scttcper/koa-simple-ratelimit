@@ -3,11 +3,14 @@
 
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
+[![coverage][coverage-image]][coverage-url]
 
 [npm-image]: https://img.shields.io/npm/v/koa-simple-ratelimit.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/koa-simple-ratelimit
 [travis-image]: https://img.shields.io/travis/scttcper/koa-simple-ratelimit.svg?style=flat-square
 [travis-url]: https://travis-ci.org/scttcper/koa-simple-ratelimit
+[coverage-image]: https://coveralls.io/repos/github/scttcper/koa-simple-ratelimit/badge.svg?branch=master
+[coverage-url]: https://coveralls.io/github/scttcper/koa-simple-ratelimit?branch=master
 
  Rate limiter middleware for koa v2. Differs from [koa-ratelimit](https://github.com/koajs/ratelimit) by not depending on [ratelimiter](https://github.com/tj/node-ratelimiter) and using redis ttl (time to live) to handle expiration time remaining. This creates only one entry in redis instead of the three that node-ratelimiter does.
 
