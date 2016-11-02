@@ -74,6 +74,69 @@ describe('ratelimit middleware', () => {
     });
   });
 
+  describe('limit twice', () => {
+    let guard;
+    let app;
+
+    const routeHitOnlyOnce = () => {
+      guard.should.be.equal(1);
+    };
+    const routeHitTwice = () => {
+      guard.should.be.equal(2);
+    };
+
+    beforeEach((done) => {
+      app = new Koa();
+
+      app.use(ratelimit({
+        duration: rateLimitDuration,
+        db: db,
+        max: 2,
+      }));
+
+      app.use((ctx, next) => {
+        guard += 1;
+        ctx.body = goodBody + guard;
+        return next();
+      });
+
+      guard = 0;
+
+      const listen = app.listen();
+      setTimeout(() => {
+        request(listen)
+          .get('/')
+          .expect(200, `${goodBody}1`)
+          .expect(routeHitOnlyOnce)
+          .end(() => {
+            request(listen)
+              .get('/')
+              .expect(200, `${goodBody}2`)
+              .expect(routeHitTwice)
+              .end(done);
+          });
+      }, rateLimitDuration * 2);
+    });
+
+    it('should respond with 429 when rate limit is exceeded', (done) => {
+      request(app.listen())
+        .get('/')
+        .expect('X-RateLimit-Remaining', '0')
+        .expect(429)
+        .end(done);
+    });
+
+    it('should not yield downstream if ratelimit is exceeded', (done) => {
+      request(app.listen())
+        .get('/')
+        .expect(429)
+        .end(() => {
+          routeHitTwice();
+          done();
+        });
+    });
+  });
+
   describe('shortlimit', () => {
     let guard;
     let app;
