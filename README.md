@@ -1,5 +1,7 @@
 # koa-simple-ratelimit
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/scttcper/koa-simple-ratelimit.svg)](https://greenkeeper.io/)
+
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
 [![coverage][coverage-image]][coverage-url]
