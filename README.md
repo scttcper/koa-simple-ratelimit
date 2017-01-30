@@ -1,7 +1,4 @@
 # koa-simple-ratelimit
-
-
-
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
 [![coverage][coverage-image]][coverage-url]
