@@ -5,9 +5,9 @@
 [![coverage][coverage-img]][coverage-url]
 [![greenkeeper][greenkeeper-img]][greenkeeper-url]
 
-[npm-img]: https://img.shields.io/npm/v/koa-simple-ratelimit.svg?style=flat-square
+[npm-img]: https://img.shields.io/npm/v/koa-simple-ratelimit.svg
 [npm-url]: https://npmjs.org/package/koa-simple-ratelimit
-[travis-img]: https://img.shields.io/travis/scttcper/koa-simple-ratelimit.svg?style=flat-square
+[travis-img]: https://img.shields.io/travis/scttcper/koa-simple-ratelimit.svg
 [travis-url]: https://travis-ci.org/scttcper/koa-simple-ratelimit
 [coverage-img]: https://codecov.io/gh/scttcper/koa-simple-ratelimit/branch/master/graph/badge.svg
 [coverage-url]: https://codecov.io/gh/scttcper/koa-simple-ratelimit  
