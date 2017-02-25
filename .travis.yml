@@ -7,4 +7,5 @@ node_js:
 services:
   - redis-server
 script: npm run coverage
-after_script: "cat ./coverage/lcov.info | coveralls"
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

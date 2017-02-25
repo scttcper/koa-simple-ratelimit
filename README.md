@@ -9,8 +9,8 @@
 [npm-url]: https://npmjs.org/package/koa-simple-ratelimit
 [travis-image]: https://img.shields.io/travis/scttcper/koa-simple-ratelimit.svg?style=flat-square
 [travis-url]: https://travis-ci.org/scttcper/koa-simple-ratelimit
-[coverage-image]: https://coveralls.io/repos/github/scttcper/koa-simple-ratelimit/badge.svg?branch=master
-[coverage-url]: https://coveralls.io/github/scttcper/koa-simple-ratelimit?branch=master
+[coverage-img]: https://codecov.io/gh/scttcper/koa-simple-ratelimit/branch/master/graph/badge.svg
+[coverage-url]: https://codecov.io/gh/scttcper/koa-simple-ratelimit  
 [greenkeeper-image]: https://badges.greenkeeper.io/scttcper/koa-simple-ratelimit.svg
 [greenkeeper-url]: https://greenkeeper.io/
 
