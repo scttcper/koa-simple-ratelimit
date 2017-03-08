@@ -28,8 +28,8 @@ ajv-keywords@^1.0.0:
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-1.5.1.tgz#314dd0a4b3368fad3dfcdc54ede6171b886daf3c"
 
 ajv@^4.7.0:
-  version "4.11.3"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-4.11.3.tgz#ce30bdb90d1254f762c75af915fb3a63e7183d22"
+  version "4.11.4"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-4.11.4.tgz#ebf3a55d4b132ea60ff5847ae85d2ef069960b45"
   dependencies:
     co "^4.6.0"
     json-stable-stringify "^1.0.1"
@@ -109,10 +109,6 @@ arrify@^1.0.0, arrify@^1.0.1:
 async@^1.4.0, async@^1.4.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
-
-async@~0.2.6:
-  version "0.2.10"
-  resolved "https://registry.yarnpkg.com/async/-/async-0.2.10.tgz#b6bbe0b0674b9d719708ca38de8c237cb526c3d1"
 
 asynckit@^0.4.0:
   version "0.4.0"
@@ -469,8 +465,8 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
 
 error-ex@^1.2.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/error-ex/-/error-ex-1.3.0.tgz#e67b43f3e82c96ea3a584ffee0b9fc3325d802d9"
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/error-ex/-/error-ex-1.3.1.tgz#f855a86ce61adc4e8621c3cda21e7a7612c3a8dc"
   dependencies:
     is-arrayish "^0.2.1"
 
@@ -547,9 +543,9 @@ escope@^3.6.0:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
-eslint-config-airbnb-base@^11.1.0:
-  version "11.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-airbnb-base/-/eslint-config-airbnb-base-11.1.0.tgz#dc9b3ec70b8c74dcbe6d6257c9da3992c39ca2ca"
+eslint-config-airbnb-base@^11.1.1:
+  version "11.1.1"
+  resolved "https://registry.yarnpkg.com/eslint-config-airbnb-base/-/eslint-config-airbnb-base-11.1.1.tgz#61e9e89e4eb89f474f6913ac817be9fbb59063e0"
 
 eslint-import-resolver-node@^0.2.0:
   version "0.2.3"
@@ -581,9 +577,9 @@ eslint-plugin-import@^2.2.0:
     minimatch "^3.0.3"
     pkg-up "^1.0.0"
 
-eslint@^3.16.1:
-  version "3.16.1"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-3.16.1.tgz#9bc31fc7341692cf772e80607508f67d711c5609"
+eslint@^3.17.1:
+  version "3.17.1"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-3.17.1.tgz#b80ae12d9c406d858406fccda627afce33ea10ea"
   dependencies:
     babel-code-frame "^6.16.0"
     chalk "^1.1.3"
@@ -739,15 +735,15 @@ flat-cache@^1.2.1:
     graceful-fs "^4.1.2"
     write "^0.2.1"
 
-for-in@^0.1.5:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/for-in/-/for-in-0.1.6.tgz#c9f96e89bfad18a545af5ec3ed352a1d9e5b4dc8"
+for-in@^1.0.1:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
 
 for-own@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/for-own/-/for-own-0.1.4.tgz#0149b41a39088c7515f51ebe1c1386d45f935072"
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/for-own/-/for-own-0.1.5.tgz#5265c681a4f294dabbf17c9509b6763aa84510ce"
   dependencies:
-    for-in "^0.1.5"
+    for-in "^1.0.1"
 
 foreground-child@^1.3.3, foreground-child@^1.5.3:
   version "1.5.6"
@@ -1023,8 +1019,8 @@ is-glob@^2.0.0, is-glob@^2.0.1:
     is-extglob "^1.0.0"
 
 is-my-json-valid@^2.10.0:
-  version "2.15.0"
-  resolved "https://registry.yarnpkg.com/is-my-json-valid/-/is-my-json-valid-2.15.0.tgz#936edda3ca3c211fd98f3b2d3e08da43f7b2915b"
+  version "2.16.0"
+  resolved "https://registry.yarnpkg.com/is-my-json-valid/-/is-my-json-valid-2.16.0.tgz#f079dd9bfdae65ee2038aae8acbc86ab109e3693"
   dependencies:
     generate-function "^2.0.0"
     generate-object-property "^1.1.0"
@@ -1055,7 +1051,7 @@ is-path-inside@^1.0.0:
 
 is-posix-bracket@^0.1.0:
   version "0.1.1"
-  resolved "http://registry.npmjs.org/is-posix-bracket/-/is-posix-bracket-0.1.1.tgz#3334dc79774368e92f016e6fbc0a88f5cd6e6bc4"
+  resolved "https://registry.yarnpkg.com/is-posix-bracket/-/is-posix-bracket-0.1.1.tgz#3334dc79774368e92f016e6fbc0a88f5cd6e6bc4"
 
 is-primitive@^2.0.0:
   version "2.0.0"
@@ -1142,8 +1138,8 @@ js-tokens@^3.0.0:
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.1.tgz#08e9f132484a2c45a30907e9dc4d5567b7f114d7"
 
 js-yaml@^3.5.1:
-  version "3.8.1"
-  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.8.1.tgz#782ba50200be7b9e5a8537001b7804db3ad02628"
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.8.2.tgz#02d3e2c0f6beab20248d412c352203827d786721"
   dependencies:
     argparse "^1.0.7"
     esprima "^3.1.1"
@@ -1197,9 +1193,9 @@ koa-is-json@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/koa-is-json/-/koa-is-json-1.0.0.tgz#273c07edcdcb8df6a2c1ab7d59ee76491451ec14"
 
-koa@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/koa/-/koa-2.0.1.tgz#c15a0da4d62554c058ae881e76992e3defe45bd8"
+koa@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/koa/-/koa-2.1.0.tgz#59a4ee64984c463502aa9b4f85f1b108453eebbf"
   dependencies:
     accepts "^1.2.2"
     content-disposition "~0.5.0"
@@ -1434,8 +1430,8 @@ negotiator@0.6.1:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
 normalize-package-data@^2.3.2:
-  version "2.3.5"
-  resolved "https://registry.yarnpkg.com/normalize-package-data/-/normalize-package-data-2.3.5.tgz#8d924f142960e1777e7ffe170543631cc7cb02df"
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/normalize-package-data/-/normalize-package-data-2.3.6.tgz#498fa420c96401f787402ba21e600def9f981fff"
   dependencies:
     hosted-git-info "^2.1.4"
     is-builtin-module "^1.0.0"
@@ -1637,8 +1633,8 @@ pseudomap@^1.0.1:
   resolved "https://registry.yarnpkg.com/pseudomap/-/pseudomap-1.0.2.tgz#f052a28da70e618917ef0a8ac34c1ae5a68286b3"
 
 qs@^6.1.0:
-  version "6.3.1"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.3.1.tgz#918c0b3bcd36679772baf135b1acb4c1651ed79d"
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
 
 randomatic@^1.1.3:
   version "1.1.6"
@@ -1753,8 +1749,8 @@ resolve-from@^2.0.0:
   resolved "https://registry.yarnpkg.com/resolve-from/-/resolve-from-2.0.0.tgz#9480ab20e94ffa1d9e80a804c7ea147611966b57"
 
 resolve@^1.1.6:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.3.1.tgz#5d0a1632609b6b00a22284293db1d5d973676314"
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.3.2.tgz#1f0442c9e0cbb8136e87b9305f932f46c7f28235"
   dependencies:
     path-parse "^1.0.5"
 
@@ -2034,10 +2030,9 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
 uglify-js@^2.6:
-  version "2.7.5"
-  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.7.5.tgz#4612c0c7baaee2ba7c487de4904ae122079f2ca8"
+  version "2.8.9"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.8.9.tgz#01194b91cc0795214093c05594ef5ac1e0b2e900"
   dependencies:
-    async "~0.2.6"
     source-map "~0.5.1"
     uglify-to-browserify "~1.0.0"
     yargs "~3.10.0"
