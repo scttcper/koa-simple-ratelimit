@@ -7,16 +7,22 @@ const debug = require('debug')('koa-simple-ratelimit');
 const ms = require('ms');
 
 function find(db, p) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     db.get(p, (err, reply) => {
+      if (err) {
+        reject(err);
+      }
       resolve(reply);
     });
   });
 }
 
 function pttl(db, p) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     db.pttl(p, (err, reply) => {
+      if (err) {
+        reject(err);
+      }
       resolve(reply);
     });
   });
@@ -46,7 +52,7 @@ function ratelimit(opts) {
   opts.headers.reset = opts.headers.reset || 'X-RateLimit-Reset';
   opts.headers.total = opts.headers.total || 'X-RateLimit-Limit';
 
-  return function ratelimiter(ctx, next) {
+  return async function ratelimiter(ctx, next) {
     const id = opts.id ? opts.id(ctx) : ctx.ip;
 
     if (id === false) {
@@ -63,53 +69,50 @@ function ratelimit(opts) {
     }
 
     const name = `limit:${id}:count`;
-    return find(opts.db, name).then((cur) => {
-      const n = Math.floor(cur);
-      let t = Date.now();
-      t += opts.duration || 3600000;
-      t = new Date(t).getTime() / 1000 || 0;
+    const cur = await find(opts.db, name);
+    const n = Math.floor(cur);
+    let t = Date.now();
+    t += opts.duration || 3600000;
+    t = new Date(t).getTime() / 1000 || 0;
 
-      const headers = {};
-      headers[opts.headers.remaining] = opts.max - 1;
-      headers[opts.headers.reset] = t;
-      headers[opts.headers.total] = opts.max;
+    const headers = {};
+    headers[opts.headers.remaining] = opts.max - 1;
+    headers[opts.headers.reset] = t;
+    headers[opts.headers.total] = opts.max;
+    ctx.set(headers);
+
+    // not existing in redis
+    if (cur === null) {
+      debug('remaining %s/%s %s', opts.max - 1, opts.max, id);
+      opts.db.set(name, opts.max - 1, 'PX', opts.duration || 3600000, 'NX');
+      return next();
+    }
+
+    const expires = await pttl(opts.db, name);
+    if (n - 1 >= 0) {
+      // existing in redis
+      opts.db.decr(name);
+      debug('remaining %s/%s %s', n - 1, opts.max, id);
+      headers[opts.headers.remaining] = n - 1;
       ctx.set(headers);
-
-      // not existing in redis
-      if (cur === null) {
-        debug('remaining %s/%s %s', opts.max - 1, opts.max, id);
-        opts.db.set(name, opts.max - 1, 'PX', opts.duration || 3600000, 'NX');
-        return next();
-      }
-
-      return pttl(opts.db, name).then((expires) => {
-        if (n - 1 >= 0) {
-          // existing in redis
-          opts.db.decr(name);
-          debug('remaining %s/%s %s', n - 1, opts.max, id);
-          headers[opts.headers.remaining] = n - 1;
-          ctx.set(headers);
-          return next();
-        }
-        if (expires < 0) {
-          debug(`${name} is stuck. Resetting.`);
-          debug('remaining %s/%s %s', opts.max - 1, opts.max, id);
-          opts.db.set(name, opts.max - 1, 'PX', opts.duration || 3600000, 'NX');
-          return next();
-        }
-        // user maxed
-        headers['Retry-After'] = t;
-        headers[opts.headers.remaining] = n;
-        ctx.set(headers);
-        ctx.status = 429;
-        const retryTime = ms(expires, { long: true });
-        ctx.body = `Rate limit exceeded, retry in ${retryTime}`;
-        if (opts.throw) {
-          ctx.throw(ctx.status, ctx.body, { headers: headers });
-        }
-        return;
-      });
-    });
+      return next();
+    }
+    if (expires < 0) {
+      debug(`${name} is stuck. Resetting.`);
+      debug('remaining %s/%s %s', opts.max - 1, opts.max, id);
+      opts.db.set(name, opts.max - 1, 'PX', opts.duration || 3600000, 'NX');
+      return next();
+    }
+    // user maxed
+    headers['Retry-After'] = t;
+    headers[opts.headers.remaining] = n;
+    ctx.set(headers);
+    ctx.status = 429;
+    const retryTime = ms(expires, { long: true });
+    ctx.body = `Rate limit exceeded, retry in ${retryTime}`;
+    if (opts.throw) {
+      ctx.throw(ctx.status, ctx.body, { headers: headers });
+    }
   };
 }
 

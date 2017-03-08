@@ -1,8 +1,8 @@
 'use strict';
 
+const expect = require('chai').expect;
 const Koa = require('koa');
 const request = require('supertest');
-const should = require('should');
 const redis = require('redis');
 
 const ratelimit = require('..');
@@ -15,6 +15,9 @@ describe('ratelimit middleware', () => {
 
   before((done) => {
     db.keys('limit:*', (err, rows) => {
+      if (err) {
+        throw new Error(err);
+      }
       rows.forEach(n => db.del(n));
     });
 
@@ -26,7 +29,7 @@ describe('ratelimit middleware', () => {
     let app;
 
     const routeHitOnlyOnce = () => {
-      guard.should.be.equal(1);
+      expect(guard).to.eq(1);
     };
 
     beforeEach((done) => {
@@ -79,10 +82,10 @@ describe('ratelimit middleware', () => {
     let app;
 
     const routeHitOnlyOnce = () => {
-      guard.should.be.equal(1);
+      expect(guard).to.eq(1);
     };
     const routeHitTwice = () => {
-      guard.should.be.equal(2);
+      expect(guard).to.eq(2);
     };
 
     beforeEach((done) => {
@@ -142,7 +145,7 @@ describe('ratelimit middleware', () => {
     let app;
 
     const routeHitOnlyOnce = () => {
-      guard.should.be.equal(1);
+      expect(guard).to.eq(1);
     };
 
     beforeEach((done) => {
@@ -169,6 +172,7 @@ describe('ratelimit middleware', () => {
       request(app.listen())
         .get('/')
         .expect('X-RateLimit-Remaining', '0')
+        .expect(routeHitOnlyOnce)
         .expect(200)
         .end(done);
     });
@@ -179,7 +183,7 @@ describe('ratelimit middleware', () => {
     let app;
 
     const routeHitOnlyOnce = () => {
-      guard.should.be.equal(1);
+      expect(guard).to.eq(1);
     };
 
     beforeEach((done) => {
@@ -239,12 +243,12 @@ describe('ratelimit middleware', () => {
         .get('/')
         .set('foo', 'bar')
         .expect((res) => {
-          res.header['x-ratelimit-remaining'].should.equal('0');
+          expect(res.header['x-ratelimit-remaining']).to.eq('0');
         })
         .end(done);
     });
 
-    it('should not limit if `id` returns `false`', (done) => {
+    it('should not limit if `id` returns `false`', () => {
       const app = new Koa();
 
       app.use(ratelimit({
@@ -254,12 +258,9 @@ describe('ratelimit middleware', () => {
         max: 5,
       }));
 
-      request(app.listen())
+      return request(app.listen())
         .get('/')
-        .expect((res) => {
-          res.header.should.not.have.property('x-ratelimit-remaining');
-        })
-        .end(done);
+        .expect((res) => expect(res.header['x-ratelimit-remaining']).to.not.exist);
     });
 
     it('should limit using the `id` value', (done) => {

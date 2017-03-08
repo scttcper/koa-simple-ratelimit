@@ -1,12 +1,5 @@
-{
-  "extends": "../.eslintrc",
-  "env": {
-    "mocha": true
-  },
-  "rules": {
-    "prefer-arrow-callback": 0,
-    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
-    "func-names": 0,
-    "no-unused-vars": 0
-  }
-}
+env:
+  mocha: true
+
+rules:
+  space-before-blocks: [2, {functions: never, keywords: always}]
