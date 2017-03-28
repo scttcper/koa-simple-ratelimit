@@ -10,7 +10,7 @@
   "main": "index.js",
   "dependencies": {
     "debug": "^2.6.1",
-    "ms": "^0.7.2"
+    "ms": "^1.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
