@@ -1,15 +1,6 @@
-# Support ES2016 features
-parser: babel-eslint
-
 extends: standard
-
-plugins: [
-  "babel"
-]
-
 rules:
   arrow-parens: 0
-  babel/arrow-parens: [2, "as-needed"]
   comma-dangle: [2, "always-multiline"]
   eqeqeq: 0
   no-return-assign: 0 # fails for arrow functions
