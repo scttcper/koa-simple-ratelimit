@@ -9,7 +9,7 @@
   },
   "main": "index.js",
   "dependencies": {
-    "debug": "^2.6.5",
+    "debug": "^2.6.6",
     "ms": "^1.0.0"
   },
   "devDependencies": {
@@ -22,7 +22,7 @@
     "eslint-plugin-standard": "^3.0.1",
     "koa": "^2.2.0",
     "mocha": "^3.3.0",
-    "nyc": "^10.2.0",
+    "nyc": "^10.3.0",
     "redis": "^2.7.1",
     "supertest": "^3.0.0"
   },
