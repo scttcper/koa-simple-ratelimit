@@ -10,7 +10,7 @@
   "main": "index.js",
   "dependencies": {
     "debug": "^2.6.6",
-    "ms": "^1.0.0"
+    "ms": "^2.0.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
