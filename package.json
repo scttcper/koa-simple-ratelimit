@@ -1,7 +1,7 @@
 {
   "name": "koa-simple-ratelimit",
   "description": "Simple Rate limiter middleware for koa v2",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "scripts": {
     "test": "NODE_ENV=test node_modules/mocha/bin/mocha --reporter spec",
     "lint": "eslint index.js test; exit 0",
@@ -13,16 +13,16 @@
     "ms": "^2.0.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
+    "chai": "^4.0.1",
     "eslint": "^3.19.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.3.0",
-    "eslint-plugin-node": "^4.2.2",
+    "eslint-plugin-node": "^5.0.0",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "koa": "^2.2.0",
     "mocha": "^3.4.2",
-    "nyc": "^10.3.2",
+    "nyc": "^11.0.1",
     "redis": "^2.7.1",
     "supertest": "^3.0.0"
   },
