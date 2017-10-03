@@ -23,6 +23,9 @@ describe('ratelimit middleware', () => {
 
     done();
   });
+  after(() => {
+    return db.end(true);
+  });
 
   describe('limit', () => {
     let guard;
@@ -50,7 +53,7 @@ describe('ratelimit middleware', () => {
       guard = 0;
 
       setTimeout(() => {
-        request(app.listen())
+        request(app.callback())
           .get('/')
           .expect(200, `${goodBody}1`)
           .expect(routeHitOnlyOnce)
@@ -59,7 +62,7 @@ describe('ratelimit middleware', () => {
     });
 
     it('should respond with 429 when rate limit is exceeded', (done) => {
-      request(app.listen())
+      request(app.callback())
         .get('/')
         .expect('X-RateLimit-Remaining', '0')
         .expect(429)
@@ -67,7 +70,7 @@ describe('ratelimit middleware', () => {
     });
 
     it('should not yield downstream if ratelimit is exceeded', (done) => {
-      request(app.listen())
+      request(app.callback())
         .get('/')
         .expect(429)
         .end(() => {
@@ -105,7 +108,7 @@ describe('ratelimit middleware', () => {
 
       guard = 0;
 
-      const listen = app.listen();
+      const listen = app.callback();
       setTimeout(() => {
         request(listen)
           .get('/')
@@ -122,7 +125,7 @@ describe('ratelimit middleware', () => {
     });
 
     it('should respond with 429 when rate limit is exceeded', (done) => {
-      request(app.listen())
+      request(app.callback())
         .get('/')
         .expect('X-RateLimit-Remaining', '0')
         .expect(429)
@@ -130,7 +133,7 @@ describe('ratelimit middleware', () => {
     });
 
     it('should not yield downstream if ratelimit is exceeded', (done) => {
-      request(app.listen())
+      request(app.callback())
         .get('/')
         .expect(429)
         .end(() => {
@@ -169,7 +172,7 @@ describe('ratelimit middleware', () => {
     });
     it('should fix an id with -1 ttl', (done) => {
       db.decr('limit:id:count');
-      request(app.listen())
+      request(app.callback())
         .get('/')
         .expect('X-RateLimit-Remaining', '0')
         .expect(routeHitOnlyOnce)
@@ -211,7 +214,7 @@ describe('ratelimit middleware', () => {
       guard = 0;
 
       setTimeout(() => {
-        request(app.listen())
+        request(app.callback())
           .get('/')
           .expect(200, `${goodBody}1`)
           .expect(routeHitOnlyOnce)
@@ -220,7 +223,7 @@ describe('ratelimit middleware', () => {
     });
 
     it('responds with 429 when rate limit is exceeded', (done) => {
-      request(app.listen())
+      request(app.callback())
         .get('/')
         .expect('X-RateLimit-Remaining', '0')
         .expect(429)
@@ -239,7 +242,7 @@ describe('ratelimit middleware', () => {
         id: ctx => ctx.request.header.foo,
       }));
 
-      request(app.listen())
+      request(app.callback())
         .get('/')
         .set('foo', 'bar')
         .expect((res) => {
@@ -258,7 +261,7 @@ describe('ratelimit middleware', () => {
         max: 5,
       }));
 
-      return request(app.listen())
+      return request(app.callback())
         .get('/')
         .expect((res) => expect(res.header['x-ratelimit-remaining']).to.not.exist);
     });
@@ -278,12 +281,12 @@ describe('ratelimit middleware', () => {
         return next();
       });
 
-      request(app.listen())
+      request(app.callback())
         .get('/')
         .set('foo', 'bar')
         .expect(200, 'bar')
         .end(() => {
-          request(app.listen())
+          request(app.callback())
             .get('/')
             .set('foo', 'biz')
             .expect(200, 'biz')
@@ -304,12 +307,12 @@ describe('ratelimit middleware', () => {
         ctx.body = ctx.header.foo;
       });
 
-      request(app.listen())
+      request(app.callback())
         .get('/')
         .set('foo', 'bar')
         .expect(200, 'bar')
         .end(() => {
-          request(app.listen())
+          request(app.callback())
             .get('/')
             .set('foo', 'bar')
             .expect(200, 'bar')
@@ -330,12 +333,12 @@ describe('ratelimit middleware', () => {
         ctx.body = ctx.header.foo;
       });
 
-      request(app.listen())
+      request(app.callback())
         .get('/')
         .set('foo', 'bar')
         .expect(200, 'bar')
         .end(() => {
-          request(app.listen())
+          request(app.callback())
             .get('/')
             .set('foo', 'bar')
             .expect(403)
