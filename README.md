@@ -10,7 +10,7 @@
 [travis-img]: https://img.shields.io/travis/scttcper/koa-simple-ratelimit.svg
 [travis-url]: https://travis-ci.org/scttcper/koa-simple-ratelimit
 [coverage-img]: https://codecov.io/gh/scttcper/koa-simple-ratelimit/branch/master/graph/badge.svg
-[coverage-url]: https://codecov.io/gh/scttcper/koa-simple-ratelimit  
+[coverage-url]: https://codecov.io/gh/scttcper/koa-simple-ratelimit
 [greenkeeper-img]: https://badges.greenkeeper.io/scttcper/koa-simple-ratelimit.svg
 [greenkeeper-url]: https://greenkeeper.io/
 
@@ -18,39 +18,36 @@
 
 ## Installation
 
-```js
-$ npm install koa-simple-ratelimit
+```sh
+npm install koa-simple-ratelimit
 ```
 
 ## Example
 
 ```js
-var ratelimit = require('koa-simple-ratelimit');
-var redis = require('redis');
-var koa = require('koa');
-var app = new koa();
+const redis = require('redis');
+const Koa = require('koa');
+const ratelimit = require('koa-simple-ratelimit');
 
-// apply rate limit
+const app = new Koa();
+
+// Apply rate limit
 
 app.use(ratelimit({
-  db: redis.createClient(),
-  duration: 60000,
-  max: 100,
-  id: function (ctx) {
-    return ctx.ip;
-  },
-  blacklist: [],
-  whitelist: []
+	db: redis.createClient(),
+	duration: 60000,
+	max: 100
 }));
 
-// response middleware
+// Response middleware
 
-app.use(function (ctx){
-  ctx.body = 'Hello';
+app.use((ctx, next) => {
+	ctx.body = 'Stuff!';
+	return next();
 });
 
-app.listen(3000);
-console.log('listening on port 3000');
+app.listen(4000);
+console.log('listening on port 4000');
 ```
 
 ## Options
@@ -61,6 +58,7 @@ console.log('listening on port 3000');
  - `id` id to compare requests [ip]
  - `whitelist` array of ids to whitelist
  - `blacklist` array of ids to blacklist
+ - `prefix` redis key prefix ["limit"]
 
 ## Responses
 
