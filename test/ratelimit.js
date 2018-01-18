@@ -263,7 +263,7 @@ describe('ratelimit middleware', () => {
 
       return request(app.callback())
         .get('/')
-        .expect((res) => expect(res.header['x-ratelimit-remaining']).to.not.exist);
+        .expect(res => expect(res.header['x-ratelimit-remaining']).to.not.exist);
     });
 
     it('should limit using the `id` value', (done) => {

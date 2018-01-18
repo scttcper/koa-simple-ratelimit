@@ -1,5 +1,9 @@
-env:
-  mocha: true
-
-rules:
-  space-before-blocks: [2, {functions: never, keywords: always}]
+{
+  "extends": "../.eslintrc",
+  "env": {
+    "mocha": true
+  },
+  "rules": {
+    "space-before-blocks": [2, { "functions": "never", "keywords": "always" }]
+  }
+}
