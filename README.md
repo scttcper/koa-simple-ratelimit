@@ -32,16 +32,16 @@ const app = new Koa();
 // Apply rate limit
 
 app.use(ratelimit({
-	db: redis.createClient(),
-	duration: 60000,
-	max: 100
+  db: redis.createClient(),
+  duration: 60000,
+  max: 100
 }));
 
 // Response middleware
 
 app.use((ctx, next) => {
-	ctx.body = 'Stuff!';
-	return next();
+  ctx.body = 'Stuff!';
+  return next();
 });
 
 app.listen(4000);
