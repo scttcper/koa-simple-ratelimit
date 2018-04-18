@@ -22,7 +22,7 @@
     "eslint-plugin-standard": "3.0.1",
     "koa": "2.5.0",
     "mocha": "5.1.1",
-    "nyc": "11.6.0",
+    "nyc": "11.7.1",
     "redis": "2.8.0",
     "supertest": "3.0.0"
   },
