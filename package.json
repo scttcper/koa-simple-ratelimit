@@ -24,7 +24,7 @@
     "mocha": "5.2.0",
     "nyc": "11.9.0",
     "redis": "2.8.0",
-    "supertest": "3.0.0"
+    "supertest": "3.1.0"
   },
   "nyc": {
     "reporter": [
