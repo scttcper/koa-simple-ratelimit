@@ -1,8 +1,7 @@
 {
   "extends": [
     "config:base",
-    "schedule:monthly",
-    ":maintainLockFilesMonthly"
+    "schedule:monthly"
   ],
   "automerge": "minor",
   "semanticCommits": true
