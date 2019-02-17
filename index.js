@@ -88,11 +88,10 @@ function ratelimit(opts = {}) {
     };
     ctx.set(headers);
 
-    debug('remaining %s/%s %s', opts.max - 1, opts.max, id);
-
     // Not existing in redis
     if (cur === null) {
       opts.db.set(name, opts.max - 1, 'PX', opts.duration || 3600000, 'NX');
+      debug('remaining %s/%s %s', opts.max - 1, opts.max, id);
       return next();
     }
 
@@ -101,6 +100,7 @@ function ratelimit(opts = {}) {
       // Existing in redis
       opts.db.decr(name);
       ctx.set(remaining, n - 1);
+      debug('remaining %s/%s %s', n - 1, opts.max, id);
       return next();
     }
     if (expires < 0) {
@@ -109,12 +109,13 @@ function ratelimit(opts = {}) {
       return next();
     }
     // User maxed
+    debug('remaining %s/%s %s', remaining, opts.max, id);
     ctx.set(remaining, n);
     ctx.set('Retry-After', t);
     ctx.status = 429;
-    ctx.body = opts.errorMessage || `Rate limit exceeded, retry in ${ms(expires, {long: true})}.`;
+    ctx.body = opts.errorMessage || `Rate limit exceeded, retry in ${ms(expires, { long: true })}.`;
     if (opts.throw) {
-      ctx.throw(ctx.status, ctx.body, {headers});
+      ctx.throw(ctx.status, ctx.body, { headers });
     }
   };
 }
