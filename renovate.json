@@ -1,8 +1,10 @@
 {
   "extends": [
-    "config:base",
+    "config:js-lib",
     "schedule:monthly"
   ],
   "automerge": "minor",
-  "semanticCommits": true
+  "rebaseStalePrs": true,
+  "semanticCommits": true,
+  "pinVersions": false
 }

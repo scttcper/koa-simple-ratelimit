@@ -1,11 +1,7 @@
-'use strict';
-
-const expect = require('chai').expect;
-const Koa = require('koa');
-const request = require('supertest');
-const redis = require('redis');
-
-const ratelimit = require('..');
+import Koa from 'koa';
+import redis from 'redis';
+import request from 'supertest';
+import ratelimit from '../src';
 
 const db = redis.createClient();
 
@@ -13,17 +9,19 @@ describe('ratelimit middleware', () => {
   const rateLimitDuration = 300;
   const goodBody = 'Num times hit: ';
 
-  before((done) => {
+  beforeEach(done => {
     db.keys('limit:*', (err, rows) => {
       if (err) {
-        throw new Error(err);
+        throw err;
       }
+
       rows.forEach(n => db.del(n));
     });
 
     done();
   });
-  after(() => {
+
+  afterAll(() => {
     return db.end(true);
   });
 
@@ -32,21 +30,23 @@ describe('ratelimit middleware', () => {
     let app;
 
     const routeHitOnlyOnce = () => {
-      expect(guard).to.eq(1);
+      expect(guard).toBe(1);
     };
 
-    beforeEach((done) => {
+    beforeEach(done => {
       app = new Koa();
 
-      app.use(ratelimit({
-        duration: rateLimitDuration,
-        db: db,
-        max: 1,
-      }));
+      app.use(
+        ratelimit({
+          duration: rateLimitDuration,
+          db,
+          max: 1,
+        }),
+      );
 
       app.use((ctx, next) => {
         guard += 1;
-        ctx.body = goodBody + guard;
+        ctx.body = `${goodBody}${guard}`;
         return next();
       });
 
@@ -61,7 +61,7 @@ describe('ratelimit middleware', () => {
       }, rateLimitDuration);
     });
 
-    it('should respond with 429 when rate limit is exceeded', (done) => {
+    it('should respond with 429 when rate limit is exceeded', done => {
       request(app.callback())
         .get('/')
         .expect('X-RateLimit-Remaining', '0')
@@ -69,7 +69,7 @@ describe('ratelimit middleware', () => {
         .end(done);
     });
 
-    it('should not yield downstream if ratelimit is exceeded', (done) => {
+    it('should not yield downstream if ratelimit is exceeded', done => {
       request(app.callback())
         .get('/')
         .expect(429)
@@ -85,24 +85,27 @@ describe('ratelimit middleware', () => {
     let app;
 
     const routeHitOnlyOnce = () => {
-      expect(guard).to.eq(1);
-    };
-    const routeHitTwice = () => {
-      expect(guard).to.eq(2);
+      expect(guard).toBe(1);
     };
 
-    beforeEach((done) => {
+    const routeHitTwice = () => {
+      expect(guard).toBe(2);
+    };
+
+    beforeEach(done => {
       app = new Koa();
 
-      app.use(ratelimit({
-        duration: rateLimitDuration,
-        db: db,
-        max: 2,
-      }));
+      app.use(
+        ratelimit({
+          duration: rateLimitDuration,
+          db,
+          max: 2,
+        }),
+      );
 
       app.use((ctx, next) => {
         guard += 1;
-        ctx.body = goodBody + guard;
+        ctx.body = `${goodBody}${guard}`;
         return next();
       });
 
@@ -124,7 +127,7 @@ describe('ratelimit middleware', () => {
       }, rateLimitDuration * 2);
     });
 
-    it('should respond with 429 when rate limit is exceeded', (done) => {
+    it('should respond with 429 when rate limit is exceeded', done => {
       request(app.callback())
         .get('/')
         .expect('X-RateLimit-Remaining', '0')
@@ -132,7 +135,7 @@ describe('ratelimit middleware', () => {
         .end(done);
     });
 
-    it('should not yield downstream if ratelimit is exceeded', (done) => {
+    it('should not yield downstream if ratelimit is exceeded', done => {
       request(app.callback())
         .get('/')
         .expect(429)
@@ -148,29 +151,31 @@ describe('ratelimit middleware', () => {
     let app;
 
     const routeHitOnlyOnce = () => {
-      expect(guard).to.eq(1);
+      expect(guard).toBe(1);
     };
 
-    beforeEach((done) => {
+    beforeEach(done => {
       app = new Koa();
 
-      app.use(ratelimit({
-        duration: 1,
-        db: db,
-        max: 1,
-        id: () => 'id',
-      }));
+      app.use(
+        ratelimit({
+          duration: 1,
+          db,
+          max: 1,
+          id: () => 'id',
+        }),
+      );
 
       app.use((ctx, next) => {
         guard += 1;
-        ctx.body = goodBody + guard;
+        ctx.body = `${goodBody}${guard}`;
         return next();
       });
 
       guard = 0;
       done();
     });
-    it('should fix an id with -1 ttl', (done) => {
+    it('should fix an id with -1 ttl', done => {
       db.decr('limit:id:count');
       request(app.callback())
         .get('/')
@@ -186,28 +191,31 @@ describe('ratelimit middleware', () => {
     let app;
 
     const routeHitOnlyOnce = () => {
-      expect(guard).to.eq(1);
+      expect(guard).toBe(1);
     };
 
-    beforeEach((done) => {
+    beforeEach(done => {
       app = new Koa();
 
-      app.use((ctx, next) => next()
-        .catch((e) => {
+      app.use((ctx, next) =>
+        next().catch(e => {
           ctx.body = e.message;
           ctx.set(e.headers);
-        }));
+        }),
+      );
 
-      app.use(ratelimit({
-        duration: rateLimitDuration,
-        db: db,
-        max: 1,
-        throw: true,
-      }));
+      app.use(
+        ratelimit({
+          duration: rateLimitDuration,
+          db,
+          max: 1,
+          throw: true,
+        }),
+      );
 
       app.use((ctx, next) => {
         guard += 1;
-        ctx.body = goodBody + guard;
+        ctx.body = `${goodBody}${guard}`;
         return next();
       });
 
@@ -222,7 +230,7 @@ describe('ratelimit middleware', () => {
       }, rateLimitDuration);
     });
 
-    it('responds with 429 when rate limit is exceeded', (done) => {
+    it('responds with 429 when rate limit is exceeded', done => {
       request(app.callback())
         .get('/')
         .expect('X-RateLimit-Remaining', '0')
@@ -232,21 +240,23 @@ describe('ratelimit middleware', () => {
   });
 
   describe('id', () => {
-    it('should allow specifying a custom `id` function', (done) => {
+    it('should allow specifying a custom `id` function', done => {
       const app = new Koa();
 
-      app.use(ratelimit({
-        db: db,
-        duration: rateLimitDuration,
-        max: 1,
-        id: ctx => ctx.request.header.foo,
-      }));
+      app.use(
+        ratelimit({
+          db,
+          duration: rateLimitDuration,
+          max: 1,
+          id: ctx => ctx.request.header.foo,
+        }),
+      );
 
       request(app.callback())
         .get('/')
         .set('foo', 'bar')
-        .expect((res) => {
-          expect(res.header['x-ratelimit-remaining']).to.eq('0');
+        .expect(res => {
+          expect(res.header['x-ratelimit-remaining']).toBe('0');
         })
         .end(done);
     });
@@ -254,27 +264,31 @@ describe('ratelimit middleware', () => {
     it('should not limit if `id` returns `false`', () => {
       const app = new Koa();
 
-      app.use(ratelimit({
-        db: db,
-        duration: rateLimitDuration,
-        id: () => false,
-        max: 5,
-      }));
+      app.use(
+        ratelimit({
+          db,
+          duration: rateLimitDuration,
+          id: () => false,
+          max: 5,
+        }),
+      );
 
       return request(app.callback())
         .get('/')
-        .expect(res => expect(res.header['x-ratelimit-remaining']).to.not.exist);
+        .expect(res => expect(res.header['x-ratelimit-remaining']).toBeUndefined());
     });
 
-    it('should limit using the `id` value', (done) => {
+    it('should limit using the `id` value', done => {
       const app = new Koa();
 
-      app.use(ratelimit({
-        db: db,
-        duration: rateLimitDuration,
-        max: 1,
-        id: ctx => ctx.request.header.foo,
-      }));
+      app.use(
+        ratelimit({
+          db,
+          duration: rateLimitDuration,
+          max: 1,
+          id: ctx => ctx.request.header.foo,
+        }),
+      );
 
       app.use((ctx, next) => {
         ctx.body = ctx.request.header.foo;
@@ -293,17 +307,19 @@ describe('ratelimit middleware', () => {
             .end(done);
         });
     });
-    it('should whitelist using the `id` value', (done) => {
+    it('should whitelist using the `id` value', done => {
       const app = new Koa();
 
-      app.use(ratelimit({
-        db: db,
-        max: 1,
-        id: ctx => ctx.header.foo,
-        whitelist: ['bar'],
-      }));
+      app.use(
+        ratelimit({
+          db,
+          max: 1,
+          id: ctx => ctx.header.foo,
+          whitelist: ['bar'],
+        }),
+      );
 
-      app.use((ctx) => {
+      app.use(ctx => {
         ctx.body = ctx.header.foo;
       });
 
@@ -319,17 +335,19 @@ describe('ratelimit middleware', () => {
             .end(done);
         });
     });
-    it('should blacklist using the `id` value', (done) => {
+    it('should blacklist using the `id` value', done => {
       const app = new Koa();
 
-      app.use(ratelimit({
-        db: db,
-        max: 1,
-        id: ctx => ctx.header.foo,
-        blacklist: 'bar',
-      }));
+      app.use(
+        ratelimit({
+          db,
+          max: 1,
+          id: ctx => ctx.header.foo,
+          blacklist: ['bar'],
+        }),
+      );
 
-      app.use((ctx) => {
+      app.use(ctx => {
         ctx.body = ctx.header.foo;
       });
 

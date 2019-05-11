@@ -1,7 +1,7 @@
-const redis = require('redis');
-const Koa = require('koa');
+import Koa from 'koa';
+import redis from 'redis';
 
-const ratelimit = require('./');
+import ratelimit from './src';
 
 const app = new Koa();
 
@@ -21,6 +21,6 @@ app.use((ctx, next) => {
 });
 
 app.listen(4000);
-console.log('listening on port 4000');
+console.log('listening on port http://localhost:4000');
 
 module.exports = app;
