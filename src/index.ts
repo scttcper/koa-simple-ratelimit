@@ -1,10 +1,11 @@
+/* eslint-disable require-atomic-updates */
 import logger from 'debug';
 import ms from 'ms';
 import { RedisClient } from 'redis';
 
 const debug = logger('koa-simple-ratelimit');
 
-function find(db: RedisClient, p: string): Promise<string> {
+async function find(db: RedisClient, p: string): Promise<string> {
   return new Promise((resolve, reject) => {
     db.get(p, (err, reply) => {
       if (err) {
@@ -16,7 +17,7 @@ function find(db: RedisClient, p: string): Promise<string> {
   });
 }
 
-function pttl(db: RedisClient, p: string): Promise<number> {
+async function pttl(db: RedisClient, p: string): Promise<number> {
   return new Promise((resolve, reject) => {
     db.pttl(p, (err, reply) => {
       if (err) {

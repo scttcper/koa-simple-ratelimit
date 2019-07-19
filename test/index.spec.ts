@@ -261,7 +261,7 @@ describe('ratelimit middleware', () => {
         .end(done);
     });
 
-    it('should not limit if `id` returns `false`', () => {
+    it('should not limit if `id` returns `false`', async () => {
       const app = new Koa();
 
       app.use(
@@ -290,7 +290,7 @@ describe('ratelimit middleware', () => {
         }),
       );
 
-      app.use((ctx, next) => {
+      app.use(async (ctx, next) => {
         ctx.body = ctx.request.header.foo;
         return next();
       });
