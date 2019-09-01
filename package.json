@@ -35,7 +35,7 @@
     "@types/debug": "4.1.5",
     "@types/jest": "24.0.18",
     "@types/koa": "2.0.49",
-    "@types/node": "12.7.2",
+    "@types/node": "12.7.3",
     "@types/redis": "2.8.13",
     "@types/supertest": "2.0.8",
     "@typescript-eslint/eslint-plugin": "2.0.0",
