@@ -5,8 +5,11 @@
   "repository": "scttcper/koa-simple-ratelimit",
   "author": "Scott Cooper <scttcper@gmail.com>",
   "license": "MIT",
-  "main": "./dist",
+  "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "koa",
     "middleware",
@@ -18,15 +21,12 @@
     "lint": "eslint src/**/*.ts test/**/*.ts",
     "lint:fix": "eslint --fix src/**/*.ts test/**/*.ts",
     "prepare": "npm run build",
-    "build": "del dist && tsc",
+    "build": "tsc -p tsconfig.build.json",
     "test": "jest --runInBand",
     "test:watch": "jest --watch --runInBand",
     "test:ci": "jest --ci --runInBand --reporters=default --reporters=jest-junit --coverage",
     "semantic-release": "semantic-release"
   },
-  "files": [
-    "dist"
-  ],
   "dependencies": {
     "debug": "^4.1.1",
     "ms": "^2.1.2"
@@ -40,7 +40,6 @@
     "@types/supertest": "2.0.8",
     "@typescript-eslint/eslint-plugin": "2.0.0",
     "@typescript-eslint/parser": "2.0.0",
-    "del-cli": "2.0.0",
     "eslint": "6.3.0",
     "eslint-config-xo-space": "0.21.0",
     "eslint-config-xo-typescript": "0.17.0",
@@ -53,6 +52,10 @@
     "supertest": "4.0.2",
     "ts-jest": "24.0.2",
     "typescript": "3.6.2"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
   },
   "release": {
     "branch": "master"
