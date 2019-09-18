@@ -29,12 +29,6 @@ async function pttl(db: RedisClient, p: string): Promise<number> {
   });
 }
 
-/**
- * Expose `ratelimit()`
- */
-export default ratelimit;
-module.exports = ratelimit;
-
 export type RatelimitExpires = (expires: number) => string;
 
 export interface RatelimitOptions {
@@ -96,7 +90,7 @@ export interface RatelimitOptions {
 /**
  * Initialize ratelimit middleware with the given `opts`
  */
-function ratelimit(options: RatelimitOptions) {
+export function ratelimit(options: RatelimitOptions) {
   const opts: Required<RatelimitOptions> = {
     max: 2500,
     duration: 3600000,

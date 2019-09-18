@@ -2,7 +2,7 @@ import Koa from 'koa';
 import redis from 'redis';
 import Redis from 'ioredis';
 import request from 'supertest';
-import ratelimit from '../src';
+import { ratelimit } from '../src';
 
 const db = redis.createClient();
 const ioDb = new Redis();

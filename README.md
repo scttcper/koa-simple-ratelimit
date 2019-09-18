@@ -25,7 +25,7 @@ npm install koa-simple-ratelimit
 import Koa from 'koa';
 import redis from 'redis';
 
-import ratelimit from './src';
+import { ratelimit } from 'koa-simple-ratelimit';
 
 const app = new Koa();
 
