@@ -44,7 +44,7 @@
     "eslint-config-xo-space": "0.21.0",
     "eslint-config-xo-typescript": "0.18.0",
     "eslint-plugin-import": "2.18.2",
-    "ioredis": "^4.14.1",
+    "ioredis": "4.14.1",
     "jest": "24.9.0",
     "jest-junit": "8.0.0",
     "koa": "2.8.1",
