@@ -34,7 +34,7 @@
   "devDependencies": {
     "@types/debug": "4.1.5",
     "@types/jest": "24.0.21",
-    "@types/koa": "2.0.49",
+    "@types/koa": "2.0.51",
     "@types/node": "12.12.3",
     "@types/redis": "2.8.14",
     "@types/supertest": "2.0.8",
@@ -47,7 +47,7 @@
     "ioredis": "4.14.1",
     "jest": "24.9.0",
     "jest-junit": "8.0.0",
-    "koa": "2.8.1",
+    "koa": "2.11.0",
     "redis": "2.8.0",
     "semantic-release": "15.13.24",
     "supertest": "4.0.2",
