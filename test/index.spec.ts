@@ -31,7 +31,7 @@ describe('ratelimit middleware with `redis`', () => {
     let guard;
     let app;
 
-    const routeHitOnlyOnce = () => {
+    const routeHitOnlyOnce = (): void => {
       expect(guard).toBe(1);
     };
 
@@ -86,11 +86,11 @@ describe('ratelimit middleware with `redis`', () => {
     let guard;
     let app;
 
-    const routeHitOnlyOnce = () => {
+    const routeHitOnlyOnce = (): void => {
       expect(guard).toBe(1);
     };
 
-    const routeHitTwice = () => {
+    const routeHitTwice = (): void => {
       expect(guard).toBe(2);
     };
 
@@ -152,7 +152,7 @@ describe('ratelimit middleware with `redis`', () => {
     let guard;
     let app;
 
-    const routeHitOnlyOnce = () => {
+    const routeHitOnlyOnce = (): void => {
       expect(guard).toBe(1);
     };
 
@@ -192,7 +192,7 @@ describe('ratelimit middleware with `redis`', () => {
     let guard;
     let app;
 
-    const routeHitOnlyOnce = () => {
+    const routeHitOnlyOnce = (): void => {
       expect(guard).toBe(1);
     };
 
@@ -392,7 +392,7 @@ describe('ratelimit middleware with `ioredis`', () => {
     let guard;
     let app;
 
-    const routeHitOnlyOnce = () => {
+    const routeHitOnlyOnce = (): void => {
       expect(guard).toBe(1);
     };
 
@@ -447,11 +447,11 @@ describe('ratelimit middleware with `ioredis`', () => {
     let guard;
     let app;
 
-    const routeHitOnlyOnce = () => {
+    const routeHitOnlyOnce = (): void => {
       expect(guard).toBe(1);
     };
 
-    const routeHitTwice = () => {
+    const routeHitTwice = (): void => {
       expect(guard).toBe(2);
     };
 
@@ -513,7 +513,7 @@ describe('ratelimit middleware with `ioredis`', () => {
     let guard;
     let app;
 
-    const routeHitOnlyOnce = () => {
+    const routeHitOnlyOnce = (): void => {
       expect(guard).toBe(1);
     };
 
@@ -553,7 +553,7 @@ describe('ratelimit middleware with `ioredis`', () => {
     let guard;
     let app;
 
-    const routeHitOnlyOnce = () => {
+    const routeHitOnlyOnce = (): void => {
       expect(guard).toBe(1);
     };
 
