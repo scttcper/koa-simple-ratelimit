@@ -89,7 +89,9 @@ export interface RatelimitOptions {
 /**
  * Initialize ratelimit middleware with the given `opts`
  */
-export function ratelimit(options: RatelimitOptions): (...args: any[]) => Promise<any> {
+export function ratelimit(
+  options: RatelimitOptions,
+): (...args: any[]) => Promise<any> {
   const opts: Required<RatelimitOptions> = {
     max: 2500,
     duration: 3600000,
@@ -103,7 +105,8 @@ export function ratelimit(options: RatelimitOptions): (...args: any[]) => Promis
       reset: 'X-RateLimit-Reset',
       total: 'X-RateLimit-Limit',
     },
-    errorMessage: (exp: number) => `Rate limit exceeded, retry in ${ms(exp, { long: true })}.`,
+    errorMessage: (exp: number) =>
+      `Rate limit exceeded, retry in ${ms(exp, { long: true })}.`,
     ...options,
   };
   const {
