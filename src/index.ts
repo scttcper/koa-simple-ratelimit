@@ -138,7 +138,7 @@ export function ratelimit(
     const n = Math.floor(Number(cur));
     let t = Date.now();
     t += opts.duration;
-    t = new Date(t).getTime() / 1000 || 0;
+    t = Math.floor(new Date(t).getTime() / 1000) || 0;
 
     const headers = {
       [remaining]: opts.max - 1,
