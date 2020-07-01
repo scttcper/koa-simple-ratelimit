@@ -37,7 +37,7 @@
     "@types/koa": "2.11.3",
     "@types/node": "13.13.12",
     "@types/redis": "2.8.18",
-    "@types/supertest": "2.0.8",
+    "@types/supertest": "2.0.10",
     "@typescript-eslint/eslint-plugin": "2.30.0",
     "@typescript-eslint/parser": "2.30.0",
     "eslint": "6.8.0",
