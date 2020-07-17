@@ -27,7 +27,7 @@ jobs:
       - image: circleci/node:14
     steps:
       - checkout
-      - run: npm install
+      - run: npm ci
       - run: npx semantic-release
 
 workflows:
