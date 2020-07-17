@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   test:
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:14
       - image: circleci/redis
     steps:
       - checkout
@@ -24,12 +24,11 @@ jobs:
           path: jest
   release:
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:14
     steps:
       - checkout
       - run: npm install
-      - run: npm run build
-      - run: npm run semantic-release
+      - run: npx semantic-release
 
 workflows:
   version: 2

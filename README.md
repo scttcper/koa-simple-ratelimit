@@ -54,8 +54,8 @@ console.log('listening on port http://localhost:4000');
  - `max` max requests within `duration` [2500]
  - `duration` of limit in milliseconds [3600000]
  - `id` id to compare requests [ip]
- - `whitelist` array of ids to whitelist
- - `blacklist` array of ids to blacklist
+ - `allowlist` array of ids to allowlist
+ - `blocklist` array of ids to blocklist
  - `prefix` redis key prefix ["limit"]
 
 ## Responses
