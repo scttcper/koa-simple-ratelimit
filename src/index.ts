@@ -4,7 +4,7 @@ import { RedisClient } from 'redis';
 
 const debug = logger('koa-simple-ratelimit');
 
-async function find(db: RedisClient, p: string): Promise<string> {
+async function find(db: RedisClient, p: string): Promise<string | null> {
   return new Promise((resolve, reject) => {
     db.get(p, (err, reply) => {
       if (err) {
@@ -46,19 +46,19 @@ export interface RatelimitOptions {
   /**
    * id to compare requests default: ip
    */
-  id?: (ctx: any) => any;
+  id?: (ctx: any) => string | false;
   /**
    * redis key prefix default: "limit"
    */
   prefix?: string;
   /**
-   * array of ids to whitelist
+   * array of ids to always allow
    */
-  whitelist?: string[];
+  allowlist?: string[];
   /**
-   * array of ids to blacklist
+   * array of ids to always deny
    */
-  blacklist?: string[];
+  blocklist?: string[];
   /**
    * throw on rate limit exceeded default: false
    */
@@ -97,9 +97,9 @@ export function ratelimit(
     duration: 3600000,
     throw: false,
     prefix: 'limit',
-    id: (ctx: any) => ctx.ip,
-    whitelist: [],
-    blacklist: [],
+    id: (ctx: any): string => ctx.ip,
+    allowlist: [],
+    blocklist: [],
     headers: {
       remaining: 'X-RateLimit-Remaining',
       reset: 'X-RateLimit-Reset',
@@ -115,20 +115,19 @@ export function ratelimit(
     total = 'X-RateLimit-Limit',
   } = opts.headers || {};
 
-  return async function (ctx, next) {
+  // eslint-disable-next-line func-names
+  return async function rateLimitMiddleware(ctx, next) {
     const id = opts.id(ctx);
 
     if (id === false) {
       return next();
     }
 
-    // Whitelist
-    if (opts.whitelist && opts.whitelist.includes(id)) {
+    if (opts.allowlist?.includes(id)) {
       return next();
     }
 
-    // Blacklist
-    if (opts.blacklist && opts.blacklist.includes(id)) {
+    if (opts.blocklist?.includes(id)) {
       return ctx.throw(403);
     }
 
