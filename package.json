@@ -31,7 +31,7 @@
     "ms": "^2.1.2"
   },
   "devDependencies": {
-    "@ctrl/eslint-config": "1.0.3",
+    "@ctrl/eslint-config": "1.0.4",
     "@jest/globals": "26.1.0",
     "@types/debug": "4.1.5",
     "@types/ioredis": "4.17.2",
