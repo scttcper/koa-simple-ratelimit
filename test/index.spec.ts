@@ -1,11 +1,5 @@
 /* eslint-disable @typescript-eslint/promise-function-async */
-import {
-  describe,
-  expect,
-  beforeEach,
-  it,
-  afterAll,
-} from '@jest/globals';
+import { describe, expect, beforeEach, it, afterAll } from '@jest/globals';
 import Koa from 'koa';
 import redis from 'redis';
 import Redis from 'ioredis';
