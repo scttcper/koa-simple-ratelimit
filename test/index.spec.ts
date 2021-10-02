@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/promise-function-async */
-import { describe, expect, beforeEach, it, afterAll } from '@jest/globals';
+import { afterAll, beforeEach, describe, expect, it } from '@jest/globals';
+import delay from 'delay';
+import Redis from 'ioredis';
 import Koa from 'koa';
 import redis from 'redis';
-import Redis from 'ioredis';
 import request from 'supertest';
-import delay from 'delay';
 
 import { ratelimit } from '../src';
 
